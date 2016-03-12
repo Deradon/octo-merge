@@ -1,3 +1,5 @@
+require 'inquirer'
+
 module OctoMerge
   # TODO: Write specs
   class InteractivePullRequests
@@ -11,10 +13,16 @@ module OctoMerge
     end
 
     def pull_requests
-      display_pull_requests
-      display_input_message
+      prs = list.all
 
-      gets.strip
+      formatted_prs = prs.map do |pull_request|
+        format_pull_request(pull_request)
+      end
+
+      system("clear")
+      idx = Ask.checkbox "Select the pull requests you want to merge", formatted_prs
+
+      idx.zip(prs).select { |e| e[0] }.map { |e| e[1][:number] }.join(",")
     end
 
     private
@@ -35,7 +43,7 @@ module OctoMerge
     end
 
     def format_pull_request(pull_request)
-      "* #{pull_request.number}:\t\"#{pull_request.title}\" by @#{pull_request.user.login}"
+      "#{pull_request.number}: \"#{pull_request.title}\" by @#{pull_request.user.login}"
     end
 
     def list
