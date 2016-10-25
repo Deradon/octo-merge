@@ -2,15 +2,15 @@ module OctoMerge
   module Strategy
     class Rebase < Base
       def run
-        fetch_master
+        fetch_base_branch
 
         pull_requests.each do |pull_request|
           fetch(pull_request)
 
           git.checkout(pull_request.number_branch)
-          git.rebase(master)
+          git.rebase(base_branch)
 
-          git.checkout(master)
+          git.checkout(base_branch)
           git.rebase("#{pull_request.number_branch}")
 
           git.delete_branch(pull_request.number_branch)

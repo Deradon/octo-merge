@@ -8,9 +8,11 @@ describe OctoMerge::CLI do
     instance_double(OctoMerge::Options,
       login: "me",
       password: "42",
+      base_branch: "production",
       dir: "rails",
       pull_requests: "23,42",
       repo: "rails",
+      remote: "upstream",
       strategy: "simple",
       setup: false
     )
@@ -42,8 +44,10 @@ describe OctoMerge::CLI do
 
     it "calls OctoMerge.run" do
       expect(OctoMerge).to receive(:run).with(
+        base_branch: "production",
         pull_request_numbers: "23,42",
         repo: "rails",
+        remote: "upstream",
         strategy: "simple",
         working_directory: "rails"
       ).and_return(true)

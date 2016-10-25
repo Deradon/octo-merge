@@ -23,9 +23,11 @@ describe OctoMerge::Options do
     its(:login) { is_expected.to eq(nil) }
     its(:password) { is_expected.to eq(nil) }
 
+    its(:base_branch) { is_expected.to eq("master") }
     its(:dir) { is_expected.to eq(File.expand_path(".")) }
     its(:pull_requests) { is_expected.to eq([]) }
     its(:repo) { is_expected.to eq(nil) }
+    its(:remote) { is_expected.to eq('origin') }
     its(:strategy) { is_expected.to eq(OctoMerge::Strategy::MergeWithoutRebase) }
   end
 
@@ -57,6 +59,8 @@ YML
         allow(File).to receive(:read).with(".octo-merge.yml")
           .and_return(<<-YML
 repo: rails/rails
+remote: upstream
+base_branch: production
 strategy: MergeWithoutRebase
 YML
           )
@@ -65,9 +69,11 @@ YML
       its(:login) { is_expected.to eq("Deradon") }
       its(:password) { is_expected.to eq("geheim") }
 
+      its(:base_branch) { is_expected.to eq("production") }
       its(:dir) { is_expected.to eq(File.expand_path(".")) }
       its(:pull_requests) { is_expected.to eq([]) }
       its(:repo) { is_expected.to eq("rails/rails") }
+      its(:remote) { is_expected.to eq("upstream") }
       its(:strategy) { is_expected.to eq(OctoMerge::Strategy::MergeWithoutRebase) }
 
       context "and with cli options" do

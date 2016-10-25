@@ -37,8 +37,10 @@ module OctoMerge
 
     def execute
       OctoMerge.run(
+        base_branch: options.base_branch,
         pull_request_numbers: options.pull_requests,
         repo: options.repo,
+        remote: options.remote,
         strategy: options.strategy,
         working_directory: options.dir
       )

@@ -1,10 +1,13 @@
 module OctoMerge
   class Execute
-    attr_reader :context, :strategy
+    attr_reader :context, :strategy, :remote, :base_branch
 
-    def initialize(context:, strategy:)
+    # TODO: move `remote` into context
+    def initialize(context:, strategy:, remote:, base_branch:)
       @context = context
       @strategy = strategy
+      @remote = remote
+      @base_branch = base_branch
     end
 
     def run
@@ -14,7 +17,9 @@ module OctoMerge
     def env
       @env ||= strategy.new(
         working_directory: context.working_directory,
-        pull_requests: context.pull_requests
+        pull_requests: context.pull_requests,
+        remote: remote,
+        base_branch: base_branch
       )
     end
   end

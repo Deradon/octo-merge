@@ -4,15 +4,15 @@ module OctoMerge
   module Strategy
     class MergeWithRebaseAndMessage < Base
       def run
-        fetch_master
+        fetch_base_branch
 
         pull_requests.each do |pull_request|
           fetch(pull_request)
 
           git.checkout(pull_request.number_branch)
-          git.rebase(master)
+          git.rebase(base_branch)
 
-          git.checkout(master)
+          git.checkout(base_branch)
           git.merge_no_ff(pull_request.number_branch)
 
           add_merge_message(pull_request)

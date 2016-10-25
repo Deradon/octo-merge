@@ -2,7 +2,7 @@ module OctoMerge
   module Strategy
     class MergeWithoutRebase < Base
       def run
-        fetch_master
+        fetch_base_branch
 
         pull_requests.each do |pull_request|
           fetch(pull_request)
